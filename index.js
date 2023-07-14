@@ -28,7 +28,7 @@ app.get('/server-time/sse', async (req, res) => {
  */
 const events = require('node:events');
 
-const eventsEmitter = new events.EventEmitter();
+const chatEmitter = new events.EventEmitter();
 
 /**
  * @type {string[]}
@@ -48,14 +48,14 @@ app.get('/chat/chatlog', async (_, res) => {
 
 	const listener = (message) => {
 		if (res.socket?.closed) {
-			eventsEmitter.off('message', listener)
+			chatEmitter.off('message', listener)
 			return
 		}
 
 		res.write(`event: message\ndata: ${message}\n\n`);
 		console.log({message});
 	};
-	eventsEmitter.on('message', listener);
+	chatEmitter.on('message', listener);
 });
 
 app.post('/chat/message', (req, res) => {
@@ -73,7 +73,7 @@ app.post('/chat/message', (req, res) => {
 	chat = chat.slice(-10)
 	console.log({chat});
 	
-	eventsEmitter.emit('message', chatMessage);
+	chatEmitter.emit('message', chatMessage);
 
 	res.redirect('/chat/');
 });
