@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>SSE</title>
+</head>
+
+<body>
+	<p>Server time: <span id="time"></span></p>
+	<p>Local time: <span id="local-time"></span></p>
+	<p>Diff: <span id="diff-time">0</span>ms</p>
+
+	<script>
+		let eventSource = new EventSource("/server-time/sse");
+
+		let serverTime = document.getElementById("time");
+		let localTime = document.getElementById("local-time");
+		let diff = document.getElementById("diff-time");
+
+		eventSource.addEventListener("date", (event) => {
+			let local = new Date();
+			let server = new Date(event.data);
+			serverTime.innerText = event.data;
+			localTime.innerText = local.toISOString();
+			diff.innerText = local.getTime() - server.getTime()
+		})
+	</script>
+</body>
+
+</html>
