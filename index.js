@@ -53,7 +53,6 @@ app.get('/chat/chatlog', async (_, res) => {
 		}
 
 		res.write(`event: message\ndata: ${message}\n\n`);
-		console.log({message});
 	};
 	chatEmitter.on('message', listener);
 });
@@ -61,7 +60,6 @@ app.get('/chat/chatlog', async (_, res) => {
 app.post('/chat/message', (req, res) => {
 	const message = req.body.message;
 	const username = req.body.username;
-
 
 	if (!username || !message) {
 		return;
@@ -71,7 +69,6 @@ app.post('/chat/message', (req, res) => {
 
 	chat.push(chatMessage);
 	chat = chat.slice(-10)
-	console.log({chat});
 	
 	chatEmitter.emit('message', chatMessage);
 

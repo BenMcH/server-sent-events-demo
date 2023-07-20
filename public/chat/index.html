@@ -7,19 +7,39 @@
 	<title>SSE</title>
 </head>
 
-<body style="height: 95vh;">
+<body style="min-height: 95vh;">
 	<textarea disabled id="chat" cols="30" rows="10" style="width: 100%; height: 70%;"></textarea>
-	<form action="/chat/message" method="post">
-		<input type="hidden" name="username" value="Guest" />
-		<input name="message" />
+	<form id="form" action="/chat/message" method="post">
+		<input type="text" id="username" name="username" value="Guest" />
+		<input name="message" id="message" />
 		<button type="submit">Send</button>
 	</form>
 	<script>
+		chat.value = ""
 		let eventSource = new EventSource("/chat/chatlog");
 
 		eventSource.addEventListener('message', (message) => {
 			console.log(message)
 			chat.value = chat.value + "\n" + message.data;
+		})
+
+		form.addEventListener('submit', (event) => {
+			event.preventDefault();
+
+			body = {
+				username: username.value,
+				message: message.value
+			}
+			message.value = '';
+
+			fetch('/chat/message', {
+				body: JSON.stringify(body),
+				headers: {
+					'Content-Type': 'application/json',
+
+				},
+				method: 'post'
+			});
 		})
 	</script>
 </body>
