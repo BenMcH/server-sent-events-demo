@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>SSE</title>
+	<link rel="stylesheet" href="/reset.css">
+	<style>
+		body {
+			height: 100vh;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			max-width: 600px;
+			margin: 0 auto;
+		}
+
+		article {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+	</style>
+</head>
+
+<body>
+	<a href="/">Back</a>
+	<article>
+		<h1 id="title"></h1>
+		<h2 id="subtitle"></h2>
+		<img id="img" />
+	</article>
+	<script>
+		let eventSource = new EventSource("/billboard/sse");
+
+		eventSource.addEventListener("ad", (event) => {
+			let ad = JSON.parse(event.data);
+
+			title.textContent = ad.title
+			subtitle.textContent = ad.subtitle
+			img.src = ad.imgSrc
+			img.alt = ad.imgAlt
+			img.style.width = '600px';
+		})
+	</script>
+</body>
+
+</html>
