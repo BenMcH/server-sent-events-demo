@@ -5,13 +5,24 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>SSE</title>
+	<link rel="stylesheet" href="/reset.css">
+	<style>
+		body {
+			height: 100vh;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+	</style>
 </head>
 
 <body>
+	<h1>Server sent events timer</h1>
 	<p>Server time: <span id="time"></span></p>
 	<p>Local time: <span id="local-time"></span></p>
 	<p>Diff: <span id="diff-time">0</span>ms</p>
-
+	<a href="/">Back</a>
 	<script>
 		let eventSource = new EventSource("/server-time/sse");
 
